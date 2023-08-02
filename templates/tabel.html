@@ -10,6 +10,11 @@
           <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
               <thead>
+                <style>
+                  tr th {
+                    text-align: center;
+                  }
+                </style>
                 <tr>
                   <th
                     class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"></th>
@@ -30,37 +35,52 @@
                     pH-Meter
                   </th>
                   <th
-                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                     Day
                   </th>
                   <th
-                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                     Time
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {% for data in range(10) %}
+                <style>
+                  tr td p {
+                    text-align: center;
+                  }
+                </style>
+                {% for data in data %}
                 <tr>
                   <td></td>
                   <td>
-                    <p class="text-xs font-weight-bold mb-0">{{data}}</p>
-                  </td>
-                  <td>
-                    <p class="text-xs font-weight-bold mb-0">23</p>
-                  </td>
-                  <td>
-                    <p class="text-xs font-weight-bold mb-0">56%</p>
-                  </td>
-                  <td>
-                    <p class="text-xs font-weight-bold mb-0">3ppm</p>
-                  </td>
-                  <td>
-                    <p class="text-xs font-weight-bold mb-0">23</p>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{loop.revindex}}
+                    </p>
                   </td>
                   <td>
                     <p class="text-xs font-weight-bold mb-0">
-                      12-12-2012 12:30
+                      {{data.temperature}}&deg;C
+                    </p>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{data.moisture}}%
+                    </p>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{data.ph_meter}}ppm
+                    </p>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{data.count_day}}
+                    </p>
+                  </td>
+                  <td>
+                    <p class="text-xs font-weight-bold mb-0">
+                      {{data.timestamp}}
                     </p>
                   </td>
                 </tr>

@@ -1,5 +1,6 @@
 {% extends 'base.html'%} {% block konten %}
 <div class="container-fluid py-4">
+  {%if data%}
   <div class="row">
     <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
       <div class="card">
@@ -10,12 +11,17 @@
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">
                   Temperature
                 </p>
-                <h5 class="font-weight-bolder">23.89&deg;C</h5>
+                <h5 class="font-weight-bolder">{{data.temperature}}&deg;C</h5>
                 <p class="mb-0">
+                  {%if fluktuasi.temperature > 0%}
                   <span class="text-success text-sm font-weight-bolder"
-                    >+5</span
+                    >+{{fluktuasi.temperature}}&deg;C</span
                   >
-                  since yesterday
+                  {%else%}
+                  <span class="text-danger text-sm font-weight-bolder"
+                    >{{fluktuasi.temperature}}&deg;C</span
+                  >
+                  {%endif%} Since Yesterday
                 </p>
               </div>
             </div>
@@ -23,7 +29,7 @@
               <div
                 class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
                 <i
-                  class="ni ni-money-coins text-lg opacity-10"
+                  class="ni ni-air-baloon text-lg opacity-10"
                   aria-hidden="true"></i>
               </div>
             </div>
@@ -40,12 +46,17 @@
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">
                   Moisture
                 </p>
-                <h5 class="font-weight-bolder">46%</h5>
+                <h5 class="font-weight-bolder">{{data.moisture}}%</h5>
                 <p class="mb-0">
+                  {%if fluktuasi.moisture > 0%}
                   <span class="text-success text-sm font-weight-bolder"
-                    >+3%</span
+                    >+{{fluktuasi.moisture}}%</span
                   >
-                  since yesterday
+                  {%else%}
+                  <span class="text-danger text-sm font-weight-bolder"
+                    >{{fluktuasi.moisture}}%</span
+                  >
+                  {%endif%} Since Yesterday
                 </p>
               </div>
             </div>
@@ -53,7 +64,7 @@
               <div
                 class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
                 <i
-                  class="ni ni-world text-lg opacity-10"
+                  class="ni ni-sound-wave text-lg opacity-10"
                   aria-hidden="true"></i>
               </div>
             </div>
@@ -70,10 +81,17 @@
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">
                   pH Value
                 </p>
-                <h5 class="font-weight-bolder">5.6 ppm</h5>
+                <h5 class="font-weight-bolder">{{data.ph_meter}}ppm</h5>
                 <p class="mb-0">
-                  <span class="text-danger text-sm font-weight-bolder">-2</span>
-                  since yesterday
+                  {%if fluktuasi.ph_meter > 0%}
+                  <span class="text-success text-sm font-weight-bolder"
+                    >+{{fluktuasi.ph_meter}}ppm</span
+                  >
+                  {%else%}
+                  <span class="text-danger text-sm font-weight-bolder"
+                    >{{fluktuasi.ph_meter}}ppm</span
+                  >
+                  {%endif%} Since Yesterday
                 </p>
               </div>
             </div>
@@ -81,7 +99,7 @@
               <div
                 class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
                 <i
-                  class="ni ni-paper-diploma text-lg opacity-10"
+                  class="ni ni-world text-lg opacity-10"
                   aria-hidden="true"></i>
               </div>
             </div>
@@ -96,19 +114,22 @@
             <div class="col-8">
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Day</p>
-                <h5 class="font-weight-bolder">17</h5>
+                <h5 class="font-weight-bolder">{{data.count_day}}</h5>
                 <p class="mb-0">
+                  {%if fluktuasi.count_day == 0%} Finish {%else%}
                   <span class="text-danger text-sm font-weight-bolder"
-                    >-23</span
+                    >-{{fluktuasi.count_day}}</span
                   >
-                  days to finish
+                  Day Until Finish {%endif%}
                 </p>
               </div>
             </div>
             <div class="col-4 text-end">
               <div
                 class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-                <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i>
+                <i
+                  class="ni ni-watch-time text-lg opacity-10"
+                  aria-hidden="true"></i>
               </div>
             </div>
           </div>
@@ -116,6 +137,7 @@
       </div>
     </div>
   </div>
+  {%endif%}
   <div class="row mt-4">
     <div class="col-lg-7 mb-lg-0 mb-4">
       <div class="card z-index-2 h-100">
@@ -244,130 +266,41 @@
         <div class="table-responsive">
           <table class="table align-items-center">
             <tbody>
+              {%for lastdatas in lastdata%}
               <tr>
                 <td class="w-30">
                   <div class="d-flex px-2 py-1 align-items-center">
                     <div>
-                      <p>1</p>
+                      <p>{{ loop.index }}</p>
                     </div>
                     <div class="ms-4">
                       <p class="text-xs font-weight-bold mb-0">Temperature:</p>
-                      <h6 class="text-sm mb-0">23.89&deg;C</h6>
+                      <h6 class="text-sm mb-0">
+                        {{lastdatas.temperature}}&deg;C
+                      </h6>
                     </div>
                   </div>
                 </td>
                 <td>
                   <div class="text-center">
                     <p class="text-xs font-weight-bold mb-0">Moisture:</p>
-                    <h6 class="text-sm mb-0">52%</h6>
+                    <h6 class="text-sm mb-0">{{lastdatas.moisture}}%</h6>
                   </div>
                 </td>
                 <td>
                   <div class="text-center">
                     <p class="text-xs font-weight-bold mb-0">pH-Meter:</p>
-                    <h6 class="text-sm mb-0">3ppm</h6>
+                    <h6 class="text-sm mb-0">{{lastdatas.ph_meter}}ppm</h6>
                   </div>
                 </td>
                 <td class="align-middle text-sm">
                   <div class="col text-center">
                     <p class="text-xs font-weight-bold mb-0">Day:</p>
-                    <h6 class="text-sm mb-0">29</h6>
+                    <h6 class="text-sm mb-0">{{lastdatas.count_day}}</h6>
                   </div>
                 </td>
               </tr>
-              <tr>
-                <td class="w-30">
-                  <div class="d-flex px-2 py-1 align-items-center">
-                    <div>
-                      <p>1</p>
-                    </div>
-                    <div class="ms-4">
-                      <p class="text-xs font-weight-bold mb-0">Temperature:</p>
-                      <h6 class="text-sm mb-0">23.89&deg;C</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">Moisture:</p>
-                    <h6 class="text-sm mb-0">52%</h6>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">pH-Meter:</p>
-                    <h6 class="text-sm mb-0">3ppm</h6>
-                  </div>
-                </td>
-                <td class="align-middle text-sm">
-                  <div class="col text-center">
-                    <p class="text-xs font-weight-bold mb-0">Day:</p>
-                    <h6 class="text-sm mb-0">29</h6>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="w-30">
-                  <div class="d-flex px-2 py-1 align-items-center">
-                    <div>
-                      <p>1</p>
-                    </div>
-                    <div class="ms-4">
-                      <p class="text-xs font-weight-bold mb-0">Temperature:</p>
-                      <h6 class="text-sm mb-0">23.89&deg;C</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">Moisture:</p>
-                    <h6 class="text-sm mb-0">52%</h6>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">pH-Meter:</p>
-                    <h6 class="text-sm mb-0">3ppm</h6>
-                  </div>
-                </td>
-                <td class="align-middle text-sm">
-                  <div class="col text-center">
-                    <p class="text-xs font-weight-bold mb-0">Day:</p>
-                    <h6 class="text-sm mb-0">29</h6>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="w-30">
-                  <div class="d-flex px-2 py-1 align-items-center">
-                    <div>
-                      <p>1</p>
-                    </div>
-                    <div class="ms-4">
-                      <p class="text-xs font-weight-bold mb-0">Temperature:</p>
-                      <h6 class="text-sm mb-0">23.89&deg;C</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">Moisture:</p>
-                    <h6 class="text-sm mb-0">52%</h6>
-                  </div>
-                </td>
-                <td>
-                  <div class="text-center">
-                    <p class="text-xs font-weight-bold mb-0">pH-Meter:</p>
-                    <h6 class="text-sm mb-0">3ppm</h6>
-                  </div>
-                </td>
-                <td class="align-middle text-sm">
-                  <div class="col text-center">
-                    <p class="text-xs font-weight-bold mb-0">Day:</p>
-                    <h6 class="text-sm mb-0">29</h6>
-                  </div>
-                </td>
-              </tr>
+              {%endfor%}
             </tbody>
           </table>
         </div>
@@ -385,7 +318,7 @@
               <div class="d-flex align-items-center">
                 <div
                   class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                  <i class="ni ni-mobile-button text-white opacity-10"></i>
+                  <i class="ni ni-tag text-white opacity-10"></i>
                 </div>
                 <div class="d-flex flex-column">
                   <h6 class="mb-1 text-dark text-sm">Palm Fronds</h6>
@@ -394,12 +327,6 @@
                     <span class="font-weight-bold">2 cm.</span></span
                   >
                 </div>
-              </div>
-              <div class="d-flex">
-                <button
-                  class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto">
-                  <i class="ni ni-bold-right" aria-hidden="true"></i>
-                </button>
               </div>
             </li>
             <li
@@ -417,19 +344,13 @@
                   >
                 </div>
               </div>
-              <div class="d-flex">
-                <button
-                  class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto">
-                  <i class="ni ni-bold-right" aria-hidden="true"></i>
-                </button>
-              </div>
             </li>
             <li
               class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
               <div class="d-flex align-items-center">
                 <div
                   class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                  <i class="ni ni-box-2 text-white opacity-10"></i>
+                  <i class="ni ni-tag text-white opacity-10"></i>
                 </div>
                 <div class="d-flex flex-column">
                   <h6 class="mb-1 text-dark text-sm">Brown sugar and EM4</h6>
@@ -441,19 +362,13 @@
                   >
                 </div>
               </div>
-              <div class="d-flex">
-                <button
-                  class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto">
-                  <i class="ni ni-bold-right" aria-hidden="true"></i>
-                </button>
-              </div>
             </li>
             <li
               class="list-group-item border-0 d-flex justify-content-between ps-0 border-radius-lg">
               <div class="d-flex align-items-center">
                 <div
                   class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                  <i class="ni ni-satisfied text-white opacity-10"></i>
+                  <i class="ni ni-tag text-white opacity-10"></i>
                 </div>
                 <div class="d-flex flex-column">
                   <h6 class="mb-1 text-dark text-sm">Aquadesk</h6>
@@ -463,12 +378,6 @@
                   >
                 </div>
               </div>
-              <div class="d-flex">
-                <button
-                  class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto">
-                  <i class="ni ni-bold-right" aria-hidden="true"></i>
-                </button>
-              </div>
             </li>
           </ul>
         </div>
@@ -476,4 +385,122 @@
     </div>
   </div>
 </div>
+{% endblock %} {% block grafik %}
+<script src="{{ url_for('static', filename= 'js/plugins/chartjs.min.js')}}"></script>
+<script>
+  var ctx1 = document.getElementById("chart-line").getContext("2d");
+
+  // Ambil data dari Flask dan ubah menjadi format JavaScript
+  var dataFromFlask = {{ grafik | safe }};
+
+  var labels = dataFromFlask.map(item => item.label);
+  var temperature = dataFromFlask.map(item => item.temperature);
+  var moisture = dataFromFlask.map(item => item.moisture);
+  var ph_meter = dataFromFlask.map(item => item.ph_meter);
+
+  var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
+
+  gradientStroke1.addColorStop(1, "rgba(94, 114, 228, 0.2)");
+  gradientStroke1.addColorStop(0.2, "rgba(94, 114, 228, 0.0)");
+  gradientStroke1.addColorStop(0, "rgba(94, 114, 228, 0)");
+  new Chart(ctx1, {
+    type: "line",
+    data: {
+      labels: labels.reverse(),
+      datasets: [
+        {
+          label: "Temperature",
+          tension: 0.4,
+          borderWidth: 0,
+          pointRadius: 0,
+          borderColor: "#EC7272",
+          backgroundColor: gradientStroke1,
+          borderWidth: 3,
+          fill: true,
+          data: temperature.reverse(),
+          maxBarThickness: 6,
+        },
+        {
+          label: "Moisture",
+          tension: 0.4,
+          borderWidth: 0,
+          pointRadius: 0,
+          borderColor: "#7FB77E",
+          backgroundColor: gradientStroke1,
+          borderWidth: 3,
+          fill: true,
+          data: moisture.reverse(),
+          maxBarThickness: 6,
+        },
+        {
+          label: "pH Meter",
+          tension: 0.4,
+          borderWidth: 0,
+          pointRadius: 0,
+          borderColor: "#C0B236",
+          backgroundColor: gradientStroke1,
+          borderWidth: 3,
+          fill: true,
+          data: ph_meter.reverse(),
+          maxBarThickness: 6,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      interaction: {
+        intersect: false,
+        mode: "index",
+      },
+      scales: {
+        y: {
+          grid: {
+            drawBorder: false,
+            display: true,
+            drawOnChartArea: true,
+            drawTicks: false,
+            borderDash: [5, 5],
+          },
+          ticks: {
+            display: true,
+            padding: 10,
+            color: "#fbfbfb",
+            font: {
+              size: 11,
+              family: "Open Sans",
+              style: "normal",
+              lineHeight: 2,
+            },
+          },
+        },
+        x: {
+          grid: {
+            drawBorder: false,
+            display: false,
+            drawOnChartArea: false,
+            drawTicks: false,
+            borderDash: [5, 5],
+          },
+          ticks: {
+            display: true,
+            color: "#373640",
+            padding: 20,
+            font: {
+              size: 11,
+              family: "Open Sans",
+              style: "normal",
+              lineHeight: 2,
+            },
+          },
+        },
+      },
+    },
+  });
+</script>
 {% endblock %}
