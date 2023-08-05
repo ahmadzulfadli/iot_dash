@@ -98,6 +98,66 @@ def device():
 # create-------------------------------------------------------
 
 
+@app.route('/inputData', methods=['GET'])
+def inputData():
+    try:
+        mode = request.args.get('mode')
+        if mode != 'save':
+            return jsonify({"error": "Mode not found."}), 400
+
+        else:
+            temperature = request.args.get('temperature', type=float)
+            moisture = request.args.get('moisture', type=float)
+            ph_meter = request.args.get('ph_meter', type=float)
+            count_day = request.args.get('count_day', type=int)
+
+            if temperature is None or moisture is None or ph_meter is None or count_day is None:
+                return jsonify({"error": "Temperature or moisture or ph_meter or count_day parameters are required."}), 400
+
+            # Lakukan operasi simpan data ke database atau lakukan tindakan sesuai kebutuhan
+            newKomposter = Komposter(
+                temperature=temperature,
+                moisture=moisture,
+                ph_meter=ph_meter,
+                count_day=count_day,
+            )
+
+            # Tambahkan data baru ke session
+            db.session.add(newKomposter)
+            # Commit session untuk menyimpan perubahan data ke database
+            db.session.commit()
+
+            return redirect(url_for('lihatData'))
+
+    except Exception as e:
+        return jsonify({"error": "An error occurred while trying to add sensor data."}), 500
+
+
+@app.route('/lihatData', methods=['GET'])
+def lihatData():
+    # tampilkan seluruh database dalam format json
+    dataKomposter = Komposter.query.order_by(
+        Komposter.timestamp.desc()).all()
+    data = []
+    for item in dataKomposter:
+        data.append({
+            'id': item.id,
+            'temperature': item.temperature,
+            'moisture': item.moisture,
+            'ph_meter': item.ph_meter,
+            'count_day': item.count_day,
+            'timestamp': item.timestamp.strftime('%H:%M'),
+        })
+
+    response = {
+        "status": "success",
+        "message": "Sensor data added successfully!",
+        "data": data
+    }
+
+    return jsonify(response), 200
+
+
 if __name__ == '__main__':
     # Launch the application
-    app.run(host='127.0.0.1', port=8001, debug=True)
+    app.run()

@@ -3,7 +3,7 @@ http://127.0.0.1:7008/input_sensor?temperature=30&humidity=79
 '''
 
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 
 # objek flask
 app = Flask(__name__)
